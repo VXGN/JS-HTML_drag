@@ -1,0 +1,1 @@
+This is JS-Draggable object made using JS as JS implementation demo in HTML, the code also works on mobile

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Draggable Squares</title>
+  <style>
+    ::-webkit-scrollbar{
+        display: none;
+    }
+
+    body {
+      -webkit-user-select: none;
+      margin: 0 auto;
+      background-image: linear-gradient(to bottom, rgb(82, 157, 128), rgb(35, 81, 71));
+      height: 100vh;
+      
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      width: 100vw;
+      height: 40px;
+      color: rgb(224, 235, 166);
+      text-align: center;
+    }
+
+    section{
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 60vh;
+    }
+
+    .desc{
+        color: rgba(203, 235, 166, 0.604);
+        text-align: center;
+        font-size: .8em;
+    }
+
+    .sqr {
+      color: rgba(203, 235, 166, 0.604);
+      width: 180px;
+      height: 180px;
+      border-radius: 10px;
+      cursor: pointer;
+      position: absolute;
+      box-shadow: 2px 2px 8px #08071a8d, -3px -3px 8px rgba(79, 205, 176, 0.476);
+      text-align: center;
+    }
+
+    h1{
+      font-size: 4em;
+    }
+    
+    p{
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+    <header>
+        <h1>Drag.</h1>
+    </header>
+    <section>
+        <div class="sqr" style="background-color: #285053;">
+            <p>Drag the square</p>
+        </div>
+    </section>
+        <div class="desc">
+            <p>A Draggable Object made using JS ⛰️.</p>
+            <b>@YOSA 2024</b>
+        </div>
+
+<script>
+    const squares = document.querySelectorAll('.sqr');
+    squares.forEach(sqr => {
+      let drag = false;
+      let offsetX, offsetY;
+
+      sqr.addEventListener('mousedown', strDrg);
+      sqr.addEventListener('touchstart', strDrg);
+
+      function strDrg(e) {
+        e.preventDefault();
+        drag = true;
+
+        if (e.type === 'mousedown') {
+          offsetX = e.clientX - sqr.getBoundingClientRect().left;
+          offsetY = e.clientY - sqr.getBoundingClientRect().top;
+          document.addEventListener('mousemove', mvSqr);
+          document.addEventListener('mouseup', stpDrg);
+        } else if (e.type === 'touchstart') {
+          offsetX = e.touches[0].clientX - sqr.getBoundingClientRect().left;
+          offsetY = e.touches[0].clientY - sqr.getBoundingClientRect().top;
+          document.addEventListener('touchmove', mvSqr);
+          document.addEventListener('touchend', stpDrg);
+        }
+      }
+
+      function mvSqr(e) {
+        e.preventDefault();
+        const x = (e.type === 'mousemove') ? e.clientX - offsetX : e.touches[0].clientX - offsetX;
+        const y = (e.type === 'mousemove') ? e.clientY - offsetY : e.touches[0].clientY - offsetY;
+        sqr.style.left = `${x}px`;
+        sqr.style.top = `${y}px`;
+      }
+
+      function stpDrg() {
+        drag = false;
+        document.removeEventListener('mousemove', mvSqr);
+        document.removeEventListener('mouseup', stpDrg);
+        document.removeEventListener('touchmove', mvSqr);
+        document.removeEventListener('touchend', stpDrg);
+      }
+    });
+  </script>
+</body>
+</html>
